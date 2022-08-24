@@ -1,0 +1,16 @@
+---
+- name: Listen for birthday wishes posted to a kafka topic
+  hosts: all
+  sources:
+    - benthomasson.eda.kafka:
+        host: broker
+        port: 9092
+        topic: eda-topic
+        group_id:
+
+  rules:
+    - name: Andrius's birthday
+      condition: event.message == "Happy Birthday, Andrius!"
+      action:
+        run_playbook:
+          name: thanks.yml
