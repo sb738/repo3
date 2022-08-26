@@ -4,4 +4,4 @@
   gather_facts: false
   tasks:
     - debug:
-        msg: "track failed"
+        msg: "{{ event.payload.type }}: {{ event.payload.track_slug}} {{ event.payload.participant_id }} {{ event.payload.timestamp }}"
