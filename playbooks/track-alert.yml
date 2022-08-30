@@ -1,7 +1,7 @@
 ---
-- name: Say thank you
+- name: Instruqt alert
   hosts: localhost
   gather_facts: false
   tasks:
     - debug:
-        msg: "{{ event.payload.type }}: {{ event.payload.track_slug}} {{ event.payload.participant_id }} {{ event.payload.timestamp }}"
+        msg: "{{ ansible_date_time.iso8601 }} - {{ event.payload.type }}: {{ event.payload.track_slug}} {{ event.payload.participant_id }}"
