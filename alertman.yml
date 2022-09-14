@@ -1,5 +1,5 @@
 ---
-- name: Listen for birthday wishes an endpoint
+- name: Listen for alertmanager events
   hosts: all
   sources:
     - benthomasson.eda.alertmanager:
