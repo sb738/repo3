@@ -1,5 +1,5 @@
 ---
-- name: Listen for birthday wishes an endpoint
+- name: Listen for incoming track failures on a webhook
   hosts: all
   sources:
     - benthomasson.eda.webhook:
