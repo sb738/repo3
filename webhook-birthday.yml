@@ -11,4 +11,4 @@
       condition: event.payload.message == "Happy Birthday, Andrius!"
       action:
         run_playbook:
-          name: thanks.yml
+          name: playbooks/thanks.yml
