@@ -1,0 +1,29 @@
+---
+- name: Automate SNOW 
+  hosts: localhost
+  collections:
+    - servicenow.itsm
+  vars:
+    username: "{{ lookup('env', 'SN_USERNAME') }}"
+    password: "{{ lookup('env', 'SN_PASSWORD') }}"
+    instance: "{{ lookup('env', 'SN_HOST') }}"
+
+  tasks:
+
+    - name: Create incident
+      servicenow.itsm.incident:
+        state: new
+        caller: "{{ username }}"
+        short_description: "{{ event.message }}"
+        description: |
+            "{{ event.dnsoutput }}"
+        impact: low
+        urgency: low
+      register: new_incident
+
+    - set_fact:
+        incident_number_cached: "{{ new_incident.record.number }}"
+        cacheable: true
+
+    - debug:
+        msg: "A new incident has been created: {{ new_incident.record.number }}"

@@ -1,0 +1,56 @@
+---
+- name: Checking platform
+  hosts: appnodes
+  gather_facts: true
+  remote_user: rhel
+  become: true
+
+  tasks:
+  
+    - name: troubleshooting connectivity 
+      ignore_errors: yes
+      block:
+
+      - name: checking connectivity to dublin-kiosk
+        shell: ping -c 1 -q 10.5.2.58
+        register: dublin
+
+      - name: checking connectivity to jhb-kiosk
+        shell: ping -c 1 -q 10.5.2.59
+        register: jhb
+
+      - name: connectivity results to node 1 ipv4
+        debug:
+          msg: PING IP DUBLIN NODE {{ dublin }}
+
+      - name: connectivity result to node 2 ipv4
+        debug:
+          msg: PING IP JHB NODE {{ jhb }}
+
+      - name: checking DNS resolution to dublin-kiosk
+        shell: ping -c 1 -q dublin-kiosk
+        register: dnsdublin
+
+      - name: checking DNS resolution to jhb-kiosk
+        shell: ping -c 1 -q jhb-kiosk
+        register: dnsjhb
+
+      - name: DNS results to node 1
+        debug:
+          msg: DUBLIN RESOLUTION {{ dnsdublin }}
+
+      - name: DNS result to node 2s
+        debug:
+          msg: JHB RESOLUTION {{ dnsjhb }}
+
+      - set_fact:
+          cacheable: true
+          dnsoutput: "{{ dnsjhb.stdout }}"
+          dnsreturncode: "{{ dnsjhb.rc }}"
+
+
+  # handlers:
+
+  #   - name: result
+  #     debug:
+  #     msg: connection successfull {{ ping }}

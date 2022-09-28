@@ -1,0 +1,23 @@
+---
+- name: Read messages from a kafka topic and act on them
+  hosts: localhost
+  sources:
+    - benthomasson.eda.kafka:
+        host: broker
+        port: 9092
+        topic: eda-topic
+        group_id:
+
+  rules:
+    - name: triage issue
+      condition: event.message == "Fatal host unreachable1234"
+      action:
+        run_playbook:
+          name: triage.yml
+          post_events: true
+    - name: open incident
+      condition: event.dnsoutput is defined
+      action:
+        run_playbook:
+          name: incident-create.yml
+          post_events: true

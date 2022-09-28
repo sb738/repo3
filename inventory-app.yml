@@ -1,0 +1,14 @@
+all:
+  hosts:
+    localhost:
+      ansible_connection: local
+  children:
+    appnodes:
+      hosts:
+        dublin-kiosk:
+          ansible_password: ansible123!
+          ansible_user: rhel
+        jhb-kiosk:
+          ansible_password: ansible123!
+          ansible_user: rhel
+    ungrouped: {}
