@@ -1,0 +1,16 @@
+---
+- name: Listen for application events
+  hosts: all
+  sources:
+    - benthomasson.eda.kafka:
+        host: broker
+        port: 9092
+        topic: eda-topic
+        group_id:
+
+  rules:
+    - name: JHB application unreachable
+      condition: event.message == "Fatal: JHB-Kiosk unreachable"
+      action:
+        run_playbook:
+          name: dump-message.yml
