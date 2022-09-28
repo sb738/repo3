@@ -1,6 +1,7 @@
 ---
 - name: Automate SNOW 
   hosts: localhost
+  gather_facts: false
   collections:
     - servicenow.itsm
   vars:
@@ -9,12 +10,15 @@
     instance: "{{ lookup('env', 'SN_HOST') }}"
 
   tasks:
+    - name: dump message
+      debug:
+        var: event
 
     - name: Create incident
       servicenow.itsm.incident:
         state: new
         caller: "{{ username }}"
-        short_description: "{{ event.message }}"
+        short_description: "{{ event.error }}"
         description: |
             "{{ event.dnsoutput }}"
         impact: low

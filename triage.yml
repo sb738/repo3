@@ -1,8 +1,7 @@
 ---
 - name: Checking platform
   hosts: appnodes
-  gather_facts: true
-  remote_user: rhel
+  gather_facts: false
   become: true
 
   tasks:
@@ -10,6 +9,10 @@
     - name: troubleshooting connectivity 
       ignore_errors: yes
       block:
+
+      - name: dump message
+        debug:
+          var: event
 
       - name: checking connectivity to dublin-kiosk
         shell: ping -c 1 -q 10.5.2.58
@@ -47,6 +50,10 @@
           cacheable: true
           dnsoutput: "{{ dnsjhb.stdout }}"
           dnsreturncode: "{{ dnsjhb.rc }}"
+
+      - set_fact:
+          cacheable: true
+          error: "{{ event.message }}"
 
 
   # handlers:

@@ -15,9 +15,9 @@
         run_playbook:
           name: triage.yml
           post_events: true
+
     - name: open incident
       condition: event.dnsoutput is defined
       action:
         run_playbook:
           name: incident-create.yml
-          post_events: true
