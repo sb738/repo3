@@ -10,7 +10,7 @@
 
   rules:
     - name: JHB application unreachable
-      condition: event.message == "Fatal: JHB-Kiosk unreachable"
+      condition: event.message == "JHB-Kiosk unreachable" and event.severity == "Fatal"
       action:
         run_playbook:
           name: dump-message.yml
