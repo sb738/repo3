@@ -10,7 +10,7 @@
 
   rules:
     - name: triage issue
-      condition: event.message == "Fatal host unreachable1234"
+      condition: event.message == "Fatal host unreachable"
       action:
         run_playbook:
           name: triage.yml

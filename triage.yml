@@ -15,11 +15,11 @@
           var: event
 
       - name: checking connectivity to dublin-kiosk
-        shell: ping -c 1 -q 10.5.2.58
+        shell: ping -c 1 -q 10.5.2.62
         register: dublin
 
       - name: checking connectivity to jhb-kiosk
-        shell: ping -c 1 -q 10.5.2.59
+        shell: ping -c 1 -q 10.5.2.61
         register: jhb
 
       - name: connectivity results to node 1 ipv4
@@ -50,14 +50,8 @@
           cacheable: true
           dnsoutput: "{{ dnsjhb.stdout }}"
           dnsreturncode: "{{ dnsjhb.rc }}"
+          appserver: "{{ event.meta.hosts }}"
 
       - set_fact:
           cacheable: true
           error: "{{ event.message }}"
-
-
-  # handlers:
-
-  #   - name: result
-  #     debug:
-  #     msg: connection successfull {{ ping }}

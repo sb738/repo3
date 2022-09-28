@@ -18,7 +18,7 @@
       servicenow.itsm.incident:
         state: new
         caller: "{{ username }}"
-        short_description: "{{ event.error }}"
+        short_description: "{{ event.appserver }} - {{ event.error }}"
         description: |
             "{{ event.dnsoutput }}"
         impact: low
