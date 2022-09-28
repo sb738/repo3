@@ -13,4 +13,4 @@
       condition: event.message == "Happy Birthday, Andrius!"
       action:
         run_playbook:
-          name: playbooks/thanks.yml
+          name: thanks.yml
