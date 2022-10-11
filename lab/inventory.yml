@@ -1,0 +1,11 @@
+all:
+  hosts:
+    localhost:
+      ansible_connection: local
+  children:
+    appnodes:
+      hosts:
+        rhel:
+          ansible_password: ansible123!
+          ansible_user: rhel
+    ungrouped: {}
