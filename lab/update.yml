@@ -1,0 +1,17 @@
+---
+- name: update application repo
+  hosts: localhost
+  gather_facts: false
+  tasks:
+
+  - name: clone repository
+    command:
+      cmd: git clone {{ event.repo.clone_url }} /tmp/{{ event.repo.name }}
+    register: repo_cloned
+
+  - debug:
+      var: repo_cloned
+
+  - set_fact:
+      cacheable: true
+      cloned: "{{ repo_cloned }}"

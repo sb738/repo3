@@ -1,0 +1,16 @@
+---
+- name: Collect and cache event data
+  hosts: localhost
+  connection: local
+  gather_facts: false
+  tasks:
+
+  - name: Set cacheable facts for event payload and meta
+    set_fact:
+      cacheable: true
+      repo: "{{ event.payload.repository }}"
+      headers: "{{ event.meta.headers }}"
+
+  - name: drop payload
+    debug:
+      var: repo
