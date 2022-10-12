@@ -9,8 +9,6 @@
     set_fact:
       cacheable: true
       repo: "{{ event.payload.repository }}"
+      commit: "{{ event.payload.head_commit }}"
+      gitref: "{{ event.payload.ref }}"
       headers: "{{ event.meta.headers }}"
-
-  - name: drop payload
-    debug:
-      var: repo

@@ -4,9 +4,13 @@
   gather_facts: false
   tasks:
 
-  - name: clone repository
-    command:
-      cmd: git clone {{ event.repo.clone_url }} /tmp/{{ event.repo.name }}
+  - name: Clone/update application repository to event ref
+    ansible.builtin.git:
+      repo: "{{ event.repo.clone_url }}"
+      dest: "/tmp/{{ event.repo.name }}"
+      clone: true
+      update: true
+      reference: "{{ event.gitref }}"
     register: repo_cloned
 
   - debug:
@@ -15,3 +19,5 @@
   - set_fact:
       cacheable: true
       cloned: "{{ repo_cloned }}"
+      gitref: "{{ event.gitref }}"
+      commit: "{{ event.commit }}"

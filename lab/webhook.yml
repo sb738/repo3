@@ -10,7 +10,7 @@
 
   rules:
     - name: Update repo
-      condition: event.payload.repository.name == "test-app" and event.meta.headers.X_Gitea_Event == "push"
+      condition: event.payload.repository.name == "eda-app" and event.meta.headers.X_Gitea_Event == "push"
       action:
         run_playbook:
           name: playbooks/collect_event.yml
@@ -24,7 +24,8 @@
           post_events: true
 
     - name: Run application playbook
-      condition: event.cloned.rc == "0"
+      condition: event.cloned.failed == "false"
       action:
         run_playbook:
-          name: /tmp/test-app/container_playbook.yml
+          name: /tmp/eda-app/deploy.yml
+          post_events: true
