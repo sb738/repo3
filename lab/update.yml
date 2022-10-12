@@ -4,20 +4,45 @@
   gather_facts: false
   tasks:
 
-  - name: Clone/update application repository to event ref
+  - name: Check if repo exists locally
+    ansible.builtin.stat:
+      path: "/tmp/{{ event.payload.repository.name }}"
+    register: repo_stat
+
+  - name: Clone application repository 
     ansible.builtin.git:
-      repo: "{{ event.repo.clone_url }}"
-      dest: "/tmp/{{ event.repo.name }}"
+      repo: "{{ event.payload.repository.clone_url }}"
+      dest: "/tmp/{{ event.payload.repository.name }}"
       clone: true
       update: true
-      reference: "{{ event.gitref }}"
+    when: repo_stat.stat.exists == false
     register: repo_cloned
+
+  - name: Set ref for repo
+    set_fact:
+      ref: "{{ 'event.payload.ref' if event.type == \"push\" else 'event.payload.pull_request.head.ref' if event.type == \"pull_request\" }}"
+
+  - name: Update application repository to event ref 
+    ansible.builtin.git:
+      repo: "{{ event.payload.repository.clone_url }}"
+      dest: "/tmp/{{ event.payload.repository.name }}"
+      clone: true
+      update: true
+      reference: "{{ ref }}"
+    register: repo_cloned
+
+  - ansible.builtin.stat:
+      path: "/tmp/{{ event.payload.repository.name }}"
+    register: repo_stat
 
   - debug:
       var: repo_cloned
 
   - set_fact:
       cacheable: true
+      repo_stat: "{{ repo_stat }}"
       cloned: "{{ repo_cloned }}"
-      gitref: "{{ event.gitref }}"
-      commit: "{{ event.commit }}"
+      headers: "{{ event.meta.headers }}"
+      repo: "{{ event.payload.repository }}"
+      gitref: "{{ ref }}"
+      commit: "{{ 'event.payload.head_commit' if event.meta.headers.X_Gitea_Event == \"push\" else '' }}"

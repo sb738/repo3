@@ -6,26 +6,55 @@
         host: 0.0.0.0
         port: 5000
       filters:
+        - ansible.eda.json_filter:
+            exclude_keys: ['sender', 'owner']
         - ansible.eda.dashes_to_underscores:
 
   rules:
-    - name: Update repo
+    - name: Get push event details
       condition: event.payload.repository.name == "eda-app" and event.meta.headers.X_Gitea_Event == "push"
       action:
-        run_playbook:
-          name: playbooks/collect_event.yml
-          post_events: true
+        post_event:
+          event:
+            type: "{{ event.meta.headers.X_Gitea_Event }}"
+            gitref: "{{ event.payload.ref }}"
+            repo_name: "{{ event.payload.repository.name }}"
+            author: "{{ event.payload.head_commit.author }}"
+            clone_url: "{{ event.payload.repository.clone_url }}"   
 
-    - name: Update repo
-      condition: event.repo is defined and event.headers is defined
+    # - name: Get pull_request event details
+    #   condition: event.payload.repository.name == "eda-app" and event.meta.headers.X_Gitea_Event == "pull_request"
+    #   action:
+    #     debug: 
+
+    - name: Get pull_request event details
+      condition: event.payload.repository.name == "eda-app" and event.meta.headers.X_Gitea_Event == "pull_request"
+      action:
+        post_event:
+          event:
+            type: "{{ event.meta.headers.X_Gitea_Event }}"
+            gitref: "{{ event.payload.pull_request.head.ref }}"
+            repo_name: "{{ event.payload.repository.name }}"
+            author: "{{ event.payload.pull_request.user.username }}"
+            clone_url: "{{ event.payload.repository.clone_url }}"  
+
+    - name: Respond to push event
+      condition: event.repo_name == "eda-app" and event.type == "push"
       action:
         run_playbook:
-          name: playbooks/update.yml
+          name: playbooks/on_push.yml
           post_events: true
 
-    - name: Run application playbook
-      condition: event.cloned.failed == "false"
+    - name: Respond to pull_request event
+      condition: event.repo_name == "eda-app" and event.type == "pull_request"
       action:
         run_playbook:
-          name: /tmp/eda-app/deploy.yml
+          name: playbooks/on_pr.yml
           post_events: true
+
+    # - name: Run application deploy playbook
+    #   condition: event.cloned.failed == "false"
+    #   action:
+    #     run_playbook:
+    #       name: /tmp/eda-app/deploy_app.yml
+    #       post_events: true

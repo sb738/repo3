@@ -1,0 +1,26 @@
+---
+- name: Capture POSTs from gitea
+  hosts: all
+  sources:
+    - ansible.eda.webhook:
+        host: 0.0.0.0
+        port: 5000
+      filters:
+        - ansible.eda.json_filter:
+            exclude_keys: ['sender', 'owner', 'user']
+        - ansible.eda.dashes_to_underscores:
+
+  rules:
+    - name: Update repo
+      condition: event.payload.repository.name == "eda-app" and event.meta.headers.X_Gitea_Event == "push"
+      action:
+        run_playbook:
+          name: playbooks/update.yml
+          post_events: true
+
+    - name: Run application deploy playbook
+      condition: event.cloned.failed == "false"
+      action:
+        run_playbook:
+          name: /tmp/eda-app/deploy_app.yml
+          post_events: true
