@@ -1,15 +1,15 @@
 ---
-- name: update application repo
+- name: pull_request -- update application repo
   hosts: localhost
   gather_facts: false
   tasks:
 
-  - name: Check if repo exists locally
+  - name: pull_request -- Check if repo exists locally
     ansible.builtin.stat:
       path: "/tmp/{{ event.repo_name }}"
     register: repo_stat
 
-  - name: Clone application repository 
+  - name: pull_request -- Clone application repository 
     ansible.builtin.git:
       repo: "{{ event.clone_url }}"
       dest: "/tmp/{{ event.repo_name }}"
@@ -18,20 +18,14 @@
     when: repo_stat.stat.exists == false
     register: repo_cloned
 
-  - name: Update application repository to event ref 
+  - name: pull_request -- Update application repository to event ref 
     ansible.builtin.git:
       repo: "{{ event.clone_url }}"
       dest: "/tmp/{{ event.repo_name }}"
       clone: true
       update: true
-      reference: "{{ event.gitref }}"
+      version: "{{ event.gitref }}"
     register: repo_cloned
-
-  - debug:
-      var: repo_cloned
-
-  - debug:
-      var: event.gitref
 
   - set_fact:
       cacheable: true
