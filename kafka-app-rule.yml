@@ -1,23 +1,15 @@
 ---
-- name: Read messages from a kafka topic and act on them
+- name: Dump event messages
   hosts: localhost
   sources:
     - benthomasson.eda.kafka:
         host: broker
         port: 9092
-        topic: eda-topic
+        topic: bobbycar-speed-alert
         group_id:
 
   rules:
-    - name: triage issue
-      condition: event.message == "Fatal host unreachable"
+    - name: debug
+      condition: event.speedAvg is defined
       action:
-        run_playbook:
-          name: triage.yml
-          post_events: true
-
-    - name: open incident
-      condition: event.dnsoutput is defined
-      action:
-        run_playbook:
-          name: incident-create.yml
+        debug:
