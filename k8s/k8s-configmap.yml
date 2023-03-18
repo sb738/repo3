@@ -1,0 +1,15 @@
+- name: React to changes of all ConfigMaps in a namespace
+  hosts: all
+  sources:
+    - sabre1041.eda.k8s:
+        api_version: v1
+        kind: ConfigMap
+        namespace: 
+        api_key: 
+        host: 
+        validate_certs: no
+  rules:
+    - name: Notify
+      condition: event.type == "MODIFIED" and event.resource.metadata.name == "suncav"
+      action:
+        debug: 
