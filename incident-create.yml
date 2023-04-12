@@ -8,6 +8,8 @@
     username: "{{ lookup('env', 'SN_USERNAME') }}"
     password: "{{ lookup('env', 'SN_PASSWORD') }}"
     instance: "{{ lookup('env', 'SN_HOST') }}"
+    short_description: 
+    description:
 
   tasks:
     - name: dump message
@@ -18,9 +20,9 @@
       servicenow.itsm.incident:
         state: new
         caller: "{{ username }}"
-        short_description: "{{ event.appserver }} - {{ event.error }}"
+        short_description: "{{ short_description }}"
         description: |
-            "{{ event.dnsoutput }}"
+            "{{ description }}"
         impact: low
         urgency: low
       register: new_incident
