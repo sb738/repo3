@@ -8,6 +8,4 @@
     - name: Debug event
       condition: event.payload.type == "sandbox.failed"
       action:
-        run_job_template:
-          name: Create Github issue
-          organization: TMM
+        debug:
