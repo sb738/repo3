@@ -6,6 +6,8 @@
         queue_name: "{{ queue_name }}"
   rules:
     - name: Debug event
-      condition: event.payload is defined
+      condition: event.payload.type == "sandbox.failed"
       action:
-        debug:
+        run_job_template:
+          name: Create Github issue
+          organization: TMM
