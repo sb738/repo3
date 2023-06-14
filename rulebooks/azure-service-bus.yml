@@ -6,6 +6,6 @@
         queue_name: "{{ queue_name }}"
   rules:
     - name: Debug event
-      condition: event.payload.type == "sandbox.failed"
+      condition: event.payload is defined
       action:
         debug:
