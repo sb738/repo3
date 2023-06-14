@@ -1,0 +1,11 @@
+- name: ASB events
+  hosts: localhost
+  sources:
+    - ansible.eda.azure_service_bus:
+        conn_str: ""
+        queue_name: ""
+  rules:
+    - name: Debug event
+      condition: event.payload is defined
+      action:
+        debug:
