@@ -1,0 +1,22 @@
+- name: Instruqt events on SQS
+  hosts: localhost
+  sources:
+    - ansible.eda.aws_sqs_queue:
+        access_key: "{{ aws_access_key }}"
+        secret_key: "{{ aws_secret_key }}"
+        session_token: "{{ aws_session_token }}"
+        endpoint_url: "{{ aws_endpoint_url }}"
+        region: "{{ region }}"
+        name: "{{ queue_name }}"
+        delay_seconds: "{{ delay_seconds }}"
+
+  rules:
+    - name: R1 - Debug1
+      condition: event.headers.application == "instruqt"
+      action:
+        debug:
+
+    - name: R2 - Debug2
+      condition: event.headers is defined
+      action:
+        debug:
