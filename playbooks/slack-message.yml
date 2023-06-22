@@ -12,7 +12,7 @@
 
   tasks:
 
-  - name: Send notification message via Slack all options
+  - name: Send notification message via Slack
     community.general.slack:
       token: "{{ token }}"
       msg: "{{ msg }}"
