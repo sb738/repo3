@@ -11,11 +11,11 @@
 
   rules:
     - name: R1 - Debug1
-      condition: event.headers.application == "instruqt"
+      condition: event.Body.headers.application == "instruqt"
       action:
         debug:
 
     - name: R2 - Debug2
-      condition: event.headers is defined
+      condition: event.Body.headers is defined
       action:
         debug:
