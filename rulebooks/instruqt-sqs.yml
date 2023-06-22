@@ -10,6 +10,7 @@
 
 
   rules:
+    # Instruqt doesn't include track_slug for sandbox.failed only track_id
     - name: R1 - Instruqt - SANDBOX FAILURE
       condition: event.body.headers.application == "instruqt" and event.body.body.type == "sandbox.failed"
       action:
