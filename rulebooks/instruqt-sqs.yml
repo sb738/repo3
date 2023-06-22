@@ -24,3 +24,8 @@
       condition: event.body.headers.application == "instruqt"
       action:
         debug:
+
+    - name: R4 - Instruqt - event catchall
+      condition: event.body is defined
+      action:
+        debug:
