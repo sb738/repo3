@@ -11,8 +11,9 @@
 
   rules:
     # Instruqt doesn't include track_slug for sandbox.failed only track_id
+    # track_id mxin1twsyurv is aap-on-ocp
     - name: R1 - Instruqt - SANDBOX FAILURE
-      condition: event.body.headers.application == "instruqt" and event.body.body.type == "sandbox.failed"
+      condition: event.body.headers.application == "instruqt" and event.body.body.type == "sandbox.failed" and event.body.body.track_id != "mxin1twsyurv"
       action:
         debug:
 
