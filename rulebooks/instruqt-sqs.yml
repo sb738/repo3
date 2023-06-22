@@ -21,6 +21,6 @@
         debug:
 
     - name: R3 - Instruqt - event catchall
-      condition: event.body.headers == "instruqt"
+      condition: event.body.headers.application == "instruqt"
       action:
         debug:
