@@ -11,16 +11,16 @@
 
   rules:
     - name: R1 - Instruqt - sandbox failure!
-      condition: event.body.headers.application == "instruqt" and event.body.body.type == "sandbox.failed"
+      condition: event.body.body.headers.application == "instruqt" and event.body.body.type == "sandbox.failed"
       action:
         debug:
 
     - name: R2 - Instruqt - ServiceNow sandbox created
-      condition: event.body.headers.application == "instruqt" and event.body.body.type == "sandbox.created" and event.body.body.track_slug == "getting-started-servicenow-automation"
+      condition: event.body.body.headers.application == "instruqt" and event.body.body.type == "sandbox.created" and event.body.body.track_slug == "getting-started-servicenow-automation"
       action:
         debug:
 
     - name: R3 - Instruqt - event catchall
-      condition: event.body.headers is defined
+      condition: event.body.body.headers.application == "instruqt"
       action:
         debug:
