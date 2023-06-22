@@ -10,7 +10,7 @@
 
 
   rules:
-    - name: R1 - Instruqt - sandbox failure!
+    - name: R1 - Instruqt - SANDBOX FAILURE
       condition: event.body.headers.application == "instruqt" and event.body.body.type == "sandbox.failed"
       action:
         debug:
@@ -25,12 +25,18 @@
       action:
         debug:
 
-    - name: R4 - Instruqt - catch all instruqt events
-      condition: event.body.headers.application == "instruqt"
+    # Instruqt doesn't include track_slug for review.* only track_id
+    - name: R4 - Instruqt - Review with feedback
+      condition: event.body.headers.application == "instruqt" and event.body.body.type == "review.updated"
       action:
         debug:
 
-    - name: R5 - Instruqt - catch all events
-      condition: event.body is defined
-      action:
-        debug:
+    # - name: R4 - Instruqt - catch all instruqt events
+    #   condition: event.body.headers.application == "instruqt"
+    #   action:
+    #     debug:
+
+    # - name: R5 - Instruqt - catch all events
+    #   condition: event.body is defined
+    #   action:
+    #     debug:
