@@ -15,8 +15,8 @@
       action:
         debug:
 
-    - name: R2 - Instruqt - ServiceNow sandbox creating...
-      condition: event.body.headers.application == "instruqt" and event.body.body.type == "sandbox.creating" and event.body.body.track_slug == "getting-started-servicenow-automation"
+    - name: R2 - Instruqt - ServiceNow sandbox created
+      condition: event.body.headers.application == "instruqt" and event.body.body.type == "sandbox.created" and event.body.body.track_slug == "getting-started-servicenow-automation"
       action:
         debug:
 
