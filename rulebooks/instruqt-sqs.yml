@@ -21,7 +21,7 @@
         debug:
 
     - name: R3 - Instruqt - ServiceNow sandbox stopped
-      condition: event.body.headers.application == "instruqt" and event.body.body.type == "sandbox.stopped" and event.body.body.track_slug == "getting-started-servicenow-automation"
+      condition: event.body.headers.application == "instruqt" and event.body.body.type == "sandbox.cleaned" and event.body.body.track_slug == "getting-started-servicenow-automation"
       action:
         debug:
 
