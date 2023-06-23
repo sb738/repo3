@@ -17,28 +17,28 @@
       action:
         debug:
 
-    - name: R2 - Instruqt - ServiceNow sandbox created
+    - name: R2 - Instruqt - ServiceNow sandbox CREATED
       condition: event.body.headers.application == "instruqt" and event.body.body.type == "sandbox.created" and event.body.body.track_slug == "getting-started-servicenow-automation"
       action:
         debug:
 
-    - name: R3 - Instruqt - ServiceNow sandbox stopped
+    - name: R3 - Instruqt - ServiceNow sandbox STOPPED
       condition: event.body.headers.application == "instruqt" and event.body.body.type == "sandbox.cleaned" and event.body.body.track_slug == "getting-started-servicenow-automation"
       action:
         debug:
 
     # Instruqt doesn't include track_slug for review.* only track_id
-    - name: R4 - Instruqt - Review with feedback
+    - name: R4 - Instruqt - New review with feedback
       condition: event.body.headers.application == "instruqt" and event.body.body.type == "review.updated"
       action:
         debug:
 
-    # - name: R4 - Instruqt - catch all instruqt events
+    # - name: R5 - Instruqt - catch all instruqt events
     #   condition: event.body.headers.application == "instruqt"
     #   action:
     #     debug:
 
-    # - name: R5 - Instruqt - catch all events
+    # - name: R6 - Instruqt - catch all events
     #   condition: event.body is defined
     #   action:
     #     debug:
