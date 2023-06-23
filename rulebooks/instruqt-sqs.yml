@@ -13,9 +13,17 @@
     # Instruqt doesn't include track_slug for sandbox.failed only track_id
     # track_id mxin1twsyurv is aap-on-ocp
     - name: R1 - Instruqt - SANDBOX FAILURE
-      condition: event.body.headers.application == "instruqt" and event.body.body.type == "sandbox.failed" and event.body.body.track_id != "mxin1twsyurv"
+      condition: event.body.headers.application == "instruqt" and event.body.body.type == "sandbox.failed"
       action:
-        debug:
+        run_job_template:
+          name: InstruqtTrackFailure
+          organization: Default
+          job_args:
+            extra_vars:
+              short_description: "Track failure: {{ event.body.body.track_slug }}"
+              description: |
+                Timestamp: {{ event.body.body.track_slug }}
+                Participant ID: {{ event.body.body.participant_id }}
 
     - name: R2 - Instruqt - ServiceNow sandbox CREATED
       condition: event.body.headers.application == "instruqt" and event.body.body.type == "sandbox.created" and event.body.body.track_slug == "getting-started-servicenow-automation"
