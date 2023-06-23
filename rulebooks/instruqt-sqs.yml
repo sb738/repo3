@@ -36,7 +36,7 @@
         debug:
 
     - name: R4 - Instruqt - Negative review
-      condition: event.body.headers.application == "instruqt" and event.body.body.type == "review.updated" and event.body.body.score < 1
+      condition: event.body.headers.application == "instruqt" and event.body.body.type == "review.updated" and event.body.body.score < 3
       action:
         run_job_template:
           name: InstruqtNegativeReview
