@@ -19,7 +19,7 @@
           organization: Default
           job_args:
             extra_vars:
-              short_description: "Track failure: {{ event.body.body.track_slug }}"
+              short_description: "Instruqt track failure: {{ event.body.body.track_slug }}"
               description: |
                 Instruqt timestamp: {{ event.body.body.timestamp }}
                 Instruqt participant ID: {{ event.body.body.participant_id }}
@@ -35,11 +35,20 @@
       action:
         debug:
 
-    # Instruqt doesn't include track_slug for review.* only track_id
-    - name: R4 - Instruqt - New review with feedback
-      condition: event.body.headers.application == "instruqt" and event.body.body.type == "review.updated"
+    - name: R4 - Instruqt - Negative review
+      condition: event.body.headers.application == "instruqt" and event.body.body.type == "review.updated" and event.body.body.score < 1
       action:
-        debug:
+        run_job_template:
+          name: InstruqtNegativeReview
+          organization: Default
+          job_args:
+            extra_vars:
+              short_description: "Instruqt negative review"
+              description: |
+                Comments: {{ event.body.body.content }}
+                Instruqt user ID: {{ event.body.body.user_id }}
+                Instruqt track ID: {{ event.body.body.track_id }}
+                Received: {{ event.meta.received_at }}
 
     # - name: R5 - Instruqt - catch all instruqt events
     #   condition: event.body.headers.application == "instruqt"
