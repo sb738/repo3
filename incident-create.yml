@@ -14,7 +14,7 @@
   tasks:
     - name: dump message
       debug:
-        var: event
+        var: ansible_eda.event
 
     - name: Create incident
       servicenow.itsm.incident:
