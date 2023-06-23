@@ -36,7 +36,7 @@
         debug:
 
     - name: R4 - Instruqt - Positive review
-      condition: event.body.headers.application == "instruqt" and event.body.body.type == "review.updated" and event.body.body.score = 5
+      condition: event.body.headers.application == "instruqt" and event.body.body.type == "review.updated" and event.body.body.score == 5
       action:
         debug:
 
