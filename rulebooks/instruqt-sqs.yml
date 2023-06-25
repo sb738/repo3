@@ -38,7 +38,9 @@
     - name: R4 - Instruqt - Positive review
       condition: event.body.headers.application == "instruqt" and event.body.body.type == "review.updated" and event.body.body.score == 5
       action:
-        debug:
+        run_job_template:
+          name: InstruqtPositiveReview
+          organization: Default
 
     - name: R5 - Instruqt - Negative review
       condition: event.body.headers.application == "instruqt" and event.body.body.type == "review.updated" and event.body.body.score < 3

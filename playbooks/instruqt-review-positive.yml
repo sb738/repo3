@@ -1,0 +1,36 @@
+---
+- name: New positive review on Instruqt track
+  hosts: localhost
+  gather_facts: false
+  vars:
+    api_url: "https://play.instruqt.com/graphql"
+    api_key: 
+    track_id: "{{ ansible_eda.event.body.body.track_id }}"
+    content: "{{ ansible_eda.event.body.body.content }}"
+    query: >
+      {
+        "query": "query { track(trackID: \"{{ track_id }}\") { slug } }"
+      }
+  tasks:
+    - name: Query track slug
+      ansible.builtin.uri:
+        url: "{{ api_url }}"
+        method: POST
+        headers:
+          Authorization: "Bearer {{ api_key }}"
+          Content-Type: "application/json"
+        body: "{{ query }}"
+        body_format: json
+        return_content: true
+      register: response
+
+    - name: Show response
+      debug:
+        var: response.json.data.track.slug
+
+    - name: Print review
+      ansible.builtin.debug:
+        msg: |
+          New positive review
+          Track: "{{ response.json.data.track.slug }}"
+          Content: "{{ content }}"
