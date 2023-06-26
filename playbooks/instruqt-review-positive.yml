@@ -18,6 +18,8 @@
         "query": "query {
           track(trackID: \"{{ track_id }}\") {
             slug
+            title
+            permalink
             developers {
               profile {
                 display_name
@@ -62,7 +64,8 @@
         msg: |
           *Instruqt positive review*
           ------------------------
-          *Track:* {{ response.json.data.track.slug }}
+          *Track:* <https://play.instruqt.com/{{ response.json.data.track.permalink }}/editor/happiness|{{ response.json.data.track.title }}>
+          *Slug:* {{ response.json.data.track.slug }}
           *Developers:* {{ developer_names | join(', ') }}
           *Review:* {{ content }}
 
