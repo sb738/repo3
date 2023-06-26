@@ -7,10 +7,10 @@
     slack_token:
     slack_username:
     slack_channel:
-    api_url: "https://play.instruqt.com/graphql"
+    api_url:
     api_key: 
-    track_id: "{{ ansible_eda.event.body.body.track_id }}"
-    content: "{{ ansible_eda.event.body.body.content }}"
+    track_id:
+    content:
     
     # This graphql query takes the track ID and returns the track slug and track developer names
     query: |
@@ -50,25 +50,25 @@
     - name: Extract developer names
       ansible.builtin.set_fact:
         developer_names: "{{ response.json.data.track.developers | map(attribute='profile.display_name') | list }}"
-        
-    - name: Print review
-      ansible.builtin.debug:
-        msg: |
-          New positive review
-          Track: "{{ response.json.data.track.slug }}"
-          Content: "{{ content }}"
-          Developers: "{{ developer_names | join(', ') }}"
 
-    - name: Send notification message via Slack
-      community.general.slack:
-        token: "{{ slack_token }}"
-        username: "{{ slack_username }}"
-        channel: "{{ slack_channel }}"
-        msg: |
+    - name: Set message content
+      ansible.builtin.set_fact:
+        message_content: |
           *Instruqt positive review*
           ------------------------
           *Track:* <https://play.instruqt.com{{ response.json.data.track.permalink }}|{{ response.json.data.track.title }}> (<https://play.instruqt.com{{ response.json.data.track.permalink }}/editor/happiness|*_Avg. score: {{ response.json.data.track.statistics.average_review_score | round(2, 'common') }}_*>)
           *Slug:* {{ response.json.data.track.slug }}
           *Developer(s):* {{ developer_names | join(', ') }}
           *Review:* {{ content }}
+        
+    - name: Print review
+      ansible.builtin.debug:
+        var: message_content
+
+    - name: Send notification message via Slack
+      community.general.slack:
+        token: "{{ slack_token }}"
+        username: "{{ slack_username }}"
+        channel: "{{ slack_channel }}"
+        msg: "{{ message_content }}"
 
