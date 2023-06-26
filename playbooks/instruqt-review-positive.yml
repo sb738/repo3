@@ -58,9 +58,9 @@
         username: "{{ slack_username }}"
         channel: "{{ slack_channel }}"
         msg: |
-        *Instruqt positive review*
-        ------------------------
-        *Track:* {{ response.json.data.track.slug }}
-        *Developers:* {{ developer_names | join(', ') }}
-        *Review:* {{ content }}
+          *Instruqt positive review*
+          ------------------------
+          *Track:* {{ response.json.data.track.slug }}
+          *Developers:* {{ developer_names | join(', ') }}
+          *Review:* {{ content }}
 
