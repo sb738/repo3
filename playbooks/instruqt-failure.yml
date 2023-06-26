@@ -1,0 +1,67 @@
+---
+- name: Instruqt sandbox failure
+  hosts: localhost
+  connection: local
+  gather_facts: false
+  vars:
+    slack_token:
+    slack_username:
+    slack_channel:
+    api_url: "https://play.instruqt.com/graphql"
+    api_key: 
+    track_id: "{{ ansible_eda.event.body.body.track_id }}"
+    
+    # This graphql query takes the track ID and returns track details (title, developers, etc.)
+    query: |
+      {
+        "query": "query {
+          track(trackID: \"{{ track_id }}\") {
+            slug
+            title
+            permalink
+            developers {
+              profile {
+                display_name
+              }
+            }
+            statistics(filterDevelopers: true)  {
+              average_review_score
+            }
+          }
+        }"
+      }
+
+  tasks:
+    - name: Query track details
+      ansible.builtin.uri:
+        url: "{{ api_url }}"
+        method: POST
+        headers:
+          Authorization: "Bearer {{ api_key }}"
+          Content-Type: "application/json"
+        body: "{{ query | regex_replace('\n', ' ') }}"
+          # Why regex_replace? GraphQL expects queries to be a single line
+          # but single-line GraphQL queries aren't very readable
+        body_format: json
+        return_content: true
+      register: response
+
+    - name: Extract developer names
+      ansible.builtin.set_fact:
+        developer_names: "{{ response.json.data.track.developers | map(attribute='profile.display_name') | list }}"
+
+    - name: Convert timestamp string to datetime and subtract 20 minutes
+      ansible.builtin.set_fact:
+        timestamp: "({{ ansible_eda.event.body.body.timestamp }} | to_datetime('%Y-%m-%dT%H:%M:%S.%fZ', 'UTC') - timedelta(minutes=20)).strftime('%Y-%m-%dT%H:%M:%S.%fZ') | urlencode }}"
+
+    - name: Send notification message via Slack
+      community.general.slack:
+        token: "{{ slack_token }}"
+        username: "{{ slack_username }}"
+        channel: "{{ slack_channel }}"
+        msg: |
+          :alarm_flash:* Instruqt FAILURE *:alarm_flash:
+          ------------------------
+          *Track:* <https://play.instruqt.com{{ response.json.data.track.permalink }}|{{ response.json.data.track.title }}> (<https://play.instruqt.com{{ response.json.data.track.permalink }}/editor/logs?participantId={{ ansible_eda.event.body.body.participant_id }}&since={{ timestamp }}|logs>)
+          *Slug:* {{ response.json.data.track.slug }}
+          *Developers:* {{ developer_names | join(', ') }}
