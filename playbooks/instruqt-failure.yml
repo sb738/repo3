@@ -61,23 +61,22 @@
       ansible.builtin.set_fact:
         new_timestamp: "{{ cmd.stdout }}"
 
-    - name: Debug
-      ansible.builtin.debug:
-        msg: |
+    - name: Set message content
+      ansible.builtin.set_fact:
+        message_content: |
           :alarm_flash: *Instruqt FAILURE* :alarm_flash:
           ------------------------
           *Track:* <https://play.instruqt.com{{ response.json.data.track.permalink }}|{{ response.json.data.track.title }}> (<https://play.instruqt.com{{ response.json.data.track.permalink }}/editor/logs?participantId={{ participant_id }}&since={{ new_timestamp }}|*_incident logs_*>)
           *Slug:* {{ response.json.data.track.slug }}
           *Developer(s):* {{ developer_names | join(', ') }}
 
+    - name: Debug
+      ansible.builtin.debug:
+        var: message_content
+
     - name: Send notification message via Slack
       community.general.slack:
         token: "{{ slack_token }}"
         username: "{{ slack_username }}"
         channel: "{{ slack_channel }}"
-        msg: |
-          :alarm_flash: *Instruqt FAILURE* :alarm_flash:
-          ------------------------
-          *Track:* <https://play.instruqt.com{{ response.json.data.track.permalink }}|{{ response.json.data.track.title }}> (<https://play.instruqt.com{{ response.json.data.track.permalink }}/editor/logs?participantId={{ participant_id }}&since={{ new_timestamp }}|*_incident logs_*>)
-          *Slug:* {{ response.json.data.track.slug }}
-          *Developer(s):* {{ developer_names | join(', ') }}
+        msg: "{{ message_content }}"
