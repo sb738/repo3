@@ -52,9 +52,14 @@
       ansible.builtin.set_fact:
         developer_names: "{{ response.json.data.track.developers | map(attribute='profile.display_name') | list }}"
 
-    - name: Convert timestamp string to datetime and subtract 20 minutes
+    - name: Convert timestamp string to datetime, subtract 20 minutes, and URL encode it
+      ansible.builtin.command: |
+        python -c "from datetime import datetime, timedelta; from urllib.parse import quote; dt = datetime.strptime('{{ timestamp[:-4] }}', '%Y-%m-%dT%H:%M:%S.%f') - timedelta(minutes=20); print(quote(dt.strftime('%Y-%m-%dT%H:%M:%S.%fZ')))"
+      register: cmd
+    
+    - name: Set the new timestamp
       ansible.builtin.set_fact:
-        new_timestamp: "{{ ((timestamp[:-4] | to_datetime('%Y-%m-%dT%H:%M:%S.%f')) - timedelta(minutes=20)).strftime('%Y-%m-%dT%H:%M:%S.%fZ') | urlencode }}"
+        new_timestamp: "{{ cmd.stdout }}"
 
     - name: Debug
       ansible.builtin.debug:
