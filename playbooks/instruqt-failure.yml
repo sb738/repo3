@@ -9,9 +9,9 @@
     slack_channel:
     api_url: "https://play.instruqt.com/graphql"
     api_key: 
-    track_id: "{{ ansible_eda.event.body.body.track_id }}"
-    timestamp: "{{ ansible_eda.event.body.body.timestamp }}"
-    participant_id: "{{ ansible_eda.event.body.body.participant_id }}"
+    track_id: 
+    timestamp: 
+    participant_id: 
     
     # This graphql query takes the track ID and returns track details (title, developers, etc.)
     query: |
