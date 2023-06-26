@@ -3,6 +3,9 @@
   hosts: localhost
   gather_facts: false
   vars:
+    slack_token:
+    slack_username:
+    slack_channel:
     api_url: "https://play.instruqt.com/graphql"
     api_key: 
     track_id: "{{ ansible_eda.event.body.body.track_id }}"
@@ -24,13 +27,16 @@
         return_content: true
       register: response
 
-    - name: Show response
-      debug:
-        var: response.json.data.track.slug
-
     - name: Print review
       ansible.builtin.debug:
         msg: |
           New positive review
           Track: "{{ response.json.data.track.slug }}"
           Content: "{{ content }}"
+
+    - name: Send notification message via Slack
+      community.general.slack:
+        token: "{{ slack_token }}"
+        msg: "------------------------\n*Track:* {{ response.json.data.track.slug }}\n*Review:* {{ content }}"
+        username: "{{ slack_username }}"
+        channel: "{{ slack_channel }}"
