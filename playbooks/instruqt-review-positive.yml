@@ -11,6 +11,7 @@
     api_key: 
     track_id:
     content:
+    slack_alert: true
     
     # This graphql query takes the track ID and returns the track slug and track developer names
     query: |
@@ -66,6 +67,7 @@
         var: message_content
 
     - name: Send notification message via Slack
+      when: slack_alert
       community.general.slack:
         token: "{{ slack_token }}"
         username: "{{ slack_username }}"
