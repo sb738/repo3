@@ -54,7 +54,7 @@
 
     - name: Convert timestamp string to datetime and subtract 20 minutes
       ansible.builtin.set_fact:
-        new_timestamp: "{{ ((timestamp | to_datetime('%Y-%m-%dT%H:%M:%S.%fZ')) - timedelta(minutes=20)).strftime('%Y-%m-%dT%H:%M:%S.%fZ') | urlencode }}"
+        new_timestamp: "{{ ((timestamp[:-4] | to_datetime('%Y-%m-%dT%H:%M:%S.%f')) - timedelta(minutes=20)).strftime('%Y-%m-%dT%H:%M:%S.%fZ') | urlencode }}"
 
     - name: Debug
       ansible.builtin.debug:
