@@ -1,6 +1,7 @@
 ---
 - name: New positive review on Instruqt track
   hosts: localhost
+  connection: local
   gather_facts: false
   vars:
     slack_token:
@@ -12,10 +13,10 @@
     content: "{{ ansible_eda.event.body.body.content }}"
     query: >
       {
-        "query": "query { track(trackID: \"{{ track_id }}\") { slug } }"
+        "query": "query { track(trackID: \"{{ track_id }}\") { slug, developers { profile { display_name } } } }"
       }
   tasks:
-    - name: Query track slug
+    - name: Query track details
       ansible.builtin.uri:
         url: "{{ api_url }}"
         method: POST
@@ -27,16 +28,21 @@
         return_content: true
       register: response
 
+    - name: Extract developer names
+      set_fact:
+        developer_names: "{{ response.json.data.track.developers | map(attribute='profile.display_name') | list }}"
+        
     - name: Print review
       ansible.builtin.debug:
         msg: |
           New positive review
           Track: "{{ response.json.data.track.slug }}"
           Content: "{{ content }}"
+          Developers: "{{ developer_names | join(', ') }}"
 
     - name: Send notification message via Slack
       community.general.slack:
         token: "{{ slack_token }}"
-        msg: "*Instruqt positive review*\n------------------------\n*Track:* {{ response.json.data.track.slug }}\n*Review:* {{ content }}"
+        msg: "*Instruqt positive review*\n------------------------\n*Track:* {{ response.json.data.track.slug }}\n*Developers:* {{ developer_names | join(', ')\n*Review:* {{ content }} }}"
         username: "{{ slack_username }}"
         channel: "{{ slack_channel }}"
