@@ -7,7 +7,7 @@
     slack_token:
     slack_username:
     slack_channel:
-    api_url: "https://play.instruqt.com/graphql"
+    api_url:
     api_key: 
     track_id: 
     timestamp: 
