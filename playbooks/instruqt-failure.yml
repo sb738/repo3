@@ -11,7 +11,8 @@
     api_key: 
     track_id: 
     timestamp: 
-    participant_id: 
+    participant_id:
+    slack_alert: true
     
     # This graphql query takes the track ID and returns track details (title, developers, etc.)
     query: |
@@ -75,6 +76,7 @@
         var: message_content
 
     - name: Send notification message via Slack
+      when: slack_alert
       community.general.slack:
         token: "{{ slack_token }}"
         username: "{{ slack_username }}"
