@@ -39,21 +39,25 @@
         run_job_template:
           name: InstruqtPositiveReview
           organization: Default
-
-    - name: R5 - Instruqt - Negative review
-      condition: event.body.headers.application == "instruqt" and event.body.body.type == "review.updated" and event.body.body.score < 3
-      action:
-        run_job_template:
-          name: InstruqtNegativeReview
-          organization: Default
-          job_args:
+            job_args:
             extra_vars:
-              short_description: "Instruqt negative review"
-              description: |
-                Comments: {{ event.body.body.content }}
-                Instruqt user ID: {{ event.body.body.user_id }}
-                Instruqt track ID: {{ event.body.body.track_id }}
-                Received: {{ event.meta.received_at }}
+              track_id: "{{ event.body.body.track_id }}"
+              content: "{{ event.body.body.content }}"
+
+    # - name: R5 - Instruqt - Negative review
+    #   condition: event.body.headers.application == "instruqt" and event.body.body.type == "review.updated" and event.body.body.score < 3
+    #   action:
+    #     run_job_template:
+    #       name: InstruqtNegativeReview
+    #       organization: Default
+    #       job_args:
+    #         extra_vars:
+    #           short_description: "Instruqt negative review"
+    #           description: |
+    #             Comments: {{ event.body.body.content }}
+    #             Instruqt user ID: {{ event.body.body.user_id }}
+    #             Instruqt track ID: {{ event.body.body.track_id }}
+    #             Received: {{ event.meta.received_at }}
 
     # - name: R5 - Instruqt - catch all instruqt events
     #   condition: event.body.headers.application == "instruqt"
