@@ -13,7 +13,7 @@
     content: "{{ ansible_eda.event.body.body.content }}"
     
     # This graphql query takes the track ID and returns the track slug and track developer names
-    query: |
+    query: >
       {
         "query": "query {
           track(trackID: \"{{ track_id }}\") {
