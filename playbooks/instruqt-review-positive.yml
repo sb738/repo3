@@ -36,6 +36,7 @@
           Authorization: "Bearer {{ api_key }}"
           Content-Type: "application/json"
         # Why regex_replace? GraphQL expects queries to be a single line
+        # but single-line GraphQL queries aren't very readable
         body: "{{ query | regex_replace('\n', ' ') }}"
         body_format: json
         return_content: true
