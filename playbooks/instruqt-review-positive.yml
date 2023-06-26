@@ -64,7 +64,7 @@
         msg: |
           *Instruqt positive review*
           ------------------------
-          *Track:* <https://play.instruqt.com/{{ response.json.data.track.permalink }}|{{ response.json.data.track.title }}>(<https://play.instruqt.com/{{ response.json.data.track.permalink }}/editor/happiness|happiness>)
+          *Track:* <https://play.instruqt.com{{ response.json.data.track.permalink }}|{{ response.json.data.track.title }}> (<https://play.instruqt.com{{ response.json.data.track.permalink }}/editor/happiness|happiness>)
           *Slug:* {{ response.json.data.track.slug }}
           *Developers:* {{ developer_names | join(', ') }}
           *Review:* {{ content }}
