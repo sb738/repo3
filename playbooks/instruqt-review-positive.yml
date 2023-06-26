@@ -26,6 +26,7 @@
           }
         }"
       }
+    query: "{{ query | regex_replace('\n', ' ') }}"
 
   tasks:
     - name: Query track details
