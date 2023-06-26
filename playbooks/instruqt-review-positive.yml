@@ -11,10 +11,22 @@
     api_key: 
     track_id: "{{ ansible_eda.event.body.body.track_id }}"
     content: "{{ ansible_eda.event.body.body.content }}"
-    query: >
+    
+    # This graphql query takes the track ID and returns the track slug and track developer names
+    query: |
       {
-        "query": "query { track(trackID: \"{{ track_id }}\") { slug, developers { profile { display_name } } } }"
+        "query": "query {
+          track(trackID: \"{{ track_id }}\") {
+            slug
+            developers {
+              profile {
+                display_name
+              }
+            }
+          }
+        }"
       }
+
   tasks:
     - name: Query track details
       ansible.builtin.uri:
@@ -29,7 +41,7 @@
       register: response
 
     - name: Extract developer names
-      set_fact:
+      ansible.builtin.set_fact:
         developer_names: "{{ response.json.data.track.developers | map(attribute='profile.display_name') | list }}"
         
     - name: Print review
@@ -43,6 +55,12 @@
     - name: Send notification message via Slack
       community.general.slack:
         token: "{{ slack_token }}"
-        msg: "*Instruqt positive review*\n------------------------\n*Track:* {{ response.json.data.track.slug }}\n*Developers:* {{ developer_names | join(', ') }}\n*Review:* {{ content }}"
         username: "{{ slack_username }}"
         channel: "{{ slack_channel }}"
+        msg: |
+        *Instruqt positive review*
+        ------------------------
+        *Track:* {{ response.json.data.track.slug }}
+        *Developers:* {{ developer_names | join(', ') }}
+        *Review:* {{ content }}
+
