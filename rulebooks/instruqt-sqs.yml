@@ -15,15 +15,13 @@
       condition: event.body.headers.application == "instruqt" and event.body.body.type == "sandbox.failed"
       action:
         run_job_template:
-          name: InstruqtTrackFailure
+          name: InstruqtSandboxFailure
           organization: Default
           job_args:
             extra_vars:
-              short_description: "Instruqt track failure: {{ event.body.body.track_slug }}"
-              description: |
-                Instruqt timestamp: {{ event.body.body.timestamp }}
-                Instruqt participant ID: {{ event.body.body.participant_id }}
-                Received: {{ event.meta.received_at }}
+              track_id: "{{ event.body.body.track_id }}"
+              timestamp: "{{ event.body.body.timestamp }}"
+              participant_id: "{{ event.body.body.participant_id }}"
 
     - name: R2 - Instruqt - ServiceNow sandbox CREATED
       condition: event.body.headers.application == "instruqt" and event.body.body.type == "sandbox.created" and event.body.body.track_slug == "getting-started-servicenow-automation"
