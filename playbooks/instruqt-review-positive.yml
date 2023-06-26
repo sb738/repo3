@@ -37,6 +37,6 @@
     - name: Send notification message via Slack
       community.general.slack:
         token: "{{ slack_token }}"
-        msg: "------------------------\n*Track:* {{ response.json.data.track.slug }}\n*Review:* {{ content }}"
+        msg: "*Instruqt positive review*\n------------------------\n*Track:* {{ response.json.data.track.slug }}\n*Review:* {{ content }}"
         username: "{{ slack_username }}"
         channel: "{{ slack_channel }}"
