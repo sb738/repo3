@@ -39,10 +39,10 @@
         run_job_template:
           name: InstruqtPositiveReview
           organization: Default
-            job_args:
-              extra_vars:
-                track_id: "{{ event.body.body.track_id }}"
-                content: "{{ event.body.body.content }}"
+          job_args:
+            extra_vars:
+              track_id: "{{ event.body.body.track_id }}"
+              content: "{{ event.body.body.content }}"
 
     # - name: R5 - Instruqt - Negative review
     #   condition: event.body.headers.application == "instruqt" and event.body.body.type == "review.updated" and event.body.body.score < 3
