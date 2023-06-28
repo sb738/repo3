@@ -52,6 +52,10 @@
       ansible.builtin.set_fact:
         developer_names: "{{ response.json.data.track.developers | map(attribute='profile.display_name') | list }}"
 
+    - name: Test content length
+      ansible.builtin.set_fact:
+        is_long_enough: "{{ content | length > 3 }}"
+
     - name: Set message content
       ansible.builtin.set_fact:
         message_content: |
@@ -67,7 +71,9 @@
         var: message_content
 
     - name: Send notification message via Slack
-      when: slack_alert
+      when: 
+        - slack_alert
+        - is_long_enough
       community.general.slack:
         token: "{{ slack_token }}"
         username: "{{ slack_username }}"
