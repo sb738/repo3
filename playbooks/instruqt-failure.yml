@@ -15,7 +15,7 @@
     slack_alert: true
     
     # This graphql query takes the track ID and returns track details (title, developers, etc.)
-    query: |
+    graphql_query: |
       {
         "query": "query {
           track(trackID: \"{{ track_id }}\") {
@@ -42,7 +42,7 @@
         headers:
           Authorization: "Bearer {{ api_key }}"
           Content-Type: "application/json"
-        body: "{{ query | regex_replace('\n', ' ') }}"
+        body: "{{ graphql_query | regex_replace('\n', ' ') }}"
           # Why regex_replace? GraphQL expects queries to be a single line
           # but single-line GraphQL queries aren't very readable
         body_format: json
