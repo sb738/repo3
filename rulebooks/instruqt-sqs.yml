@@ -44,7 +44,12 @@
               track_id: "{{ event.body.body.track_id }}"
               content: "{{ event.body.body.content }}"
 
-    # - name: R5 - Instruqt - Negative review
+    - name: R5 - Instruqt - catch all events
+      condition: event.body.headers.application == "instruqt" and event.body is defined
+      action:
+        debug:
+
+    # - name: R6 - Instruqt - Negative review
     #   condition: event.body.headers.application == "instruqt" and event.body.body.type == "review.updated" and event.body.body.score < 3
     #   action:
     #     run_job_template:
@@ -59,12 +64,12 @@
     #             Instruqt track ID: {{ event.body.body.track_id }}
     #             Received: {{ event.meta.received_at }}
 
-    # - name: R5 - Instruqt - catch all instruqt events
+    # - name: R7 - Instruqt - catch all instruqt events
     #   condition: event.body.headers.application == "instruqt"
     #   action:
     #     debug:
 
-    # - name: R6 - Instruqt - catch all events
+    # - name: R8 - Instruqt - catch all events
     #   condition: event.body is defined
     #   action:
     #     debug:
