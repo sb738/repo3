@@ -44,8 +44,8 @@
               track_id: "{{ event.body.body.track_id }}"
               content: "{{ event.body.body.content }}"
 
-    - name: R5 - Instruqt - catch all events
-      condition: event.body.headers.application == "instruqt" and event.body is defined
+    - name: R5 - Datadog - catch all events
+      condition: event.body is search("datadog")
       action:
         debug:
 
