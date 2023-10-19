@@ -6,7 +6,7 @@
         port: 5000
 
   rules:
-    - name: Debug event
-      condition: event.meta is defined
+    - name: Catch all ServiceNow events
+      condition: event.meta.endpoint == "servicenow"
       action:
         debug:
