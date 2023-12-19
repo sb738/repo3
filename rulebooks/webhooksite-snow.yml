@@ -19,15 +19,15 @@
 
     - name: R2 - New/updated top priority Incident (ServiceNow)
       condition: |
-        event.content.sys_class_name == "sc_request" and 
+        event.content.sys_class_name == "incident" and 
         event.content.impact == "1"
       action:
         debug:
 
     - name: R3 - Catalog request approved (ServiceNow)
       condition: |
-        event.content.sys_class_name == "incident" and 
-        event.content.apporval == "approved"
+        event.content.sys_class_name == "sc_request" and 
+        event.content.approval == "approved"
       action:
         debug:
 
