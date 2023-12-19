@@ -17,14 +17,21 @@
       action:
         debug:
 
-    - name: R2 - Catch top priority incidents
+    - name: R2 - New/updated top priority Incident (ServiceNow)
       condition: |
-        event.content.sys_class_name == "incident" and 
+        event.content.sys_class_name == "sc_request" and 
         event.content.impact == "1"
       action:
         debug:
 
-    - name: R3 - Catch all others
+    - name: R3 - Catalog request approved (ServiceNow)
+      condition: |
+        event.content.sys_class_name == "incident" and 
+        event.content.apporval == "approved"
+      action:
+        debug:
+
+    - name: R4 - Catch all others
       condition: |
         event.content is defined
       action:
