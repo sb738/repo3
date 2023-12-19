@@ -3,9 +3,12 @@
   sources:
     - name: Webhook.site POSTs as events
       cloin.eda.webhooksite:
-        token: "{{ token }}"
+        token: "{{ source_token }}"
         interval: 10
         skip_first_poll: true
+      filters:
+         - cloin.eda.poster:
+             webhook_url: "{{ poster_token }}"
 
   rules:
     - name: R1 - New webhook.site POST with content
