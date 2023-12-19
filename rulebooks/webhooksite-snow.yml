@@ -16,7 +16,13 @@
 
     - name: R2 - Catch high priority incidents
       condition: |
-        event.sys_class_name == "incident" and 
-        event.impact < 3
+        event.content.sys_class_name == "incident" and 
+        event.content.impact < 3
+      action:
+        debug:
+
+    - name: R3 - Catch all others
+      condition: |
+        event.content is defined
       action:
         debug:
