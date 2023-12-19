@@ -17,10 +17,10 @@
       action:
         debug:
 
-    - name: R2 - Catch high priority incidents
+    - name: R2 - Catch top priority incidents
       condition: |
         event.content.sys_class_name == "incident" and 
-        event.content.impact < 3
+        event.content.impact == "1"
       action:
         debug:
 
