@@ -8,7 +8,7 @@
         skip_first_poll: true
       filters:
          - cloin.eda.poster:
-             webhook_url: "{{ poster_token }}"
+             webhook_url: "https://webhook.site/6a6c1a53-a9b3-42ea-b5df-cfd8e05cea2f"
 
   rules:
     - name: R1 - New webhook.site POST with content
