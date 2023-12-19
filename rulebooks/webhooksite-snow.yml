@@ -1,0 +1,22 @@
+- name: webhook.site events
+  hosts: localhost
+  sources:
+    - name: Webhook.site POSTs as events
+      cloin.eda.webhooksite:
+        token: "{{ token }}"
+        interval: 10
+        skip_first_poll: true
+
+  rules:
+    - name: R1 - New webhook.site POST with content
+      condition: |
+        event.content.key == "value"
+      action:
+        debug:
+
+    - name: R2 - Catch high priority incidents
+      condition: |
+        event.sys_class_name == "incident" and 
+        event.impact < 3
+      action:
+        debug:
