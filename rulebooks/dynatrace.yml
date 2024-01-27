@@ -16,6 +16,18 @@
     #       name: "Remediate CPU saturation issue"
     #       organization: "Default"
 
+    - name: SwingSight dispatch RangeRoamer
+      condition: |
+        event.title == "Too many golf balls" 
+      action:
+        debug:
+
+    - name: SwingSight request latency
+      condition: |
+        event.title == "SwingSight latency" 
+      action:
+        debug:
+
     - name: Catch all remaining
       condition: event.meta is defined
       action:
