@@ -9,7 +9,7 @@
     proxy_listen_port:
     proxy_upstream:
     proxy_upstream_port:
-    disable_proxy:
+    disable_proxy: false
 
   tasks:
     - name: Ensure proxy exists
@@ -27,4 +27,4 @@
         name: "{{ proxy_name }}"
         listen: "[::]:{{ proxy_listen_port }}"
         upstream: "{{ proxy_upstream }}:{{ proxy_upstream_port }}"
-        state: "present"
+        state: "absent"
