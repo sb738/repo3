@@ -12,6 +12,7 @@
     disable_proxy: false
     toxic_name: response_latency
     toxic_type: latency
+    disable_toxic: true
 
   tasks:
     - name: Ensure proxy exists
