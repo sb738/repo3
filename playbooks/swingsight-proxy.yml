@@ -1,5 +1,5 @@
 ---
-- name: Comprehensive Toxiproxy Testing
+- name: Configure proxy
   hosts: localhost
   gather_facts: no
   vars:
@@ -13,7 +13,7 @@
   tasks:
     - name: Create a Toxiproxy proxy
       cloin.toxiproxy.proxy:
-        url: "{{ proxy_url }}:{{ proxy_port }}"
+        url: "{{ proxy_url }}"
         name: "{{ proxy_name }}"
         listen: "[::]:{{ proxy_listen_port }}"
         upstream: "{{ proxy_upstream }}:{{ proxy_upstream_port }}"
