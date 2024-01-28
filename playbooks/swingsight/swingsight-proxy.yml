@@ -9,7 +9,7 @@
     proxy_listen_port:
     proxy_upstream:
     proxy_upstream_port:
-    disable_proxy: false
+    disable_proxy:
 
   tasks:
     - name: Ensure proxy exists
