@@ -9,7 +9,11 @@
     proxy_listen_port:
     proxy_upstream:
     proxy_upstream_port:
+    toxic_name: response_latency
+    toxic_type: latency
     disable_proxy: false
+    create_toxic: false
+    disable_toxic: true
 
   tasks:
     - name: Ensure proxy exists
@@ -27,4 +31,28 @@
         name: "{{ proxy_name }}"
         listen: "[::]:{{ proxy_listen_port }}"
         upstream: "{{ proxy_upstream }}:{{ proxy_upstream_port }}"
+        state: "absent"
+
+    - name: Create a latency toxic
+      when: create_toxic
+      cloin.toxiproxy.toxic:
+        url: "{{ proxy_url }}"
+        proxy_name: "{{ proxy_name }}"
+        toxic_name: "{{ toxic_name }}"
+        toxic_type: "{{ toxic_type }}"
+        attributes:
+          latency: 5000
+          jitter: 500
+        state: "present"
+
+    - name: Delete latency toxic
+      when: disable_toxic
+      cloin.toxiproxy.toxic:
+        url: "{{ proxy_url }}"
+        proxy_name: "{{ proxy_name }}"
+        toxic_name: "{{ toxic_name }}"
+        toxic_type: "{{ toxic_type }}"
+        attributes:
+          latency: 5000
+          jitter: 500
         state: "absent"
