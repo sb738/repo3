@@ -9,9 +9,19 @@
     proxy_listen_port:
     proxy_upstream:
     proxy_upstream_port:
+    disable_proxy: false
 
   tasks:
-    - name: Create a Toxiproxy proxy
+    - name: Create and enable proxy
+      cloin.toxiproxy.proxy:
+        url: "{{ proxy_url }}"
+        name: "{{ proxy_name }}"
+        listen: "[::]:{{ proxy_listen_port }}"
+        upstream: "{{ proxy_upstream }}:{{ proxy_upstream_port }}"
+        state: "present"
+
+    - name: Disable proxy
+      when: disable_proxy
       cloin.toxiproxy.proxy:
         url: "{{ proxy_url }}"
         name: "{{ proxy_name }}"
