@@ -12,7 +12,7 @@
     disable_proxy: false
 
   tasks:
-    - name: Create and enable proxy
+    - name: Ensure proxy exists
       cloin.toxiproxy.proxy:
         url: "{{ proxy_url }}"
         name: "{{ proxy_name }}"
