@@ -1,5 +1,5 @@
 ---
-- name: Listen for events on a webhook
+- name: Catch Dynatrace Problems
   hosts: all
   sources:
     - dynatrace.event_driven_ansible.dt_esa_api:
@@ -26,7 +26,15 @@
       condition: |
         event.title == "SwingSight latency" 
       action:
-        debug:
+        run_job_template:
+          name: "SwingSight | Configure proxy"
+          organization: Default
+            job_args:
+              extra_vars:
+                disable_proxy: false
+                create_toxic: false
+                disable_toxic: true
+                
 
     - name: Catch all remaining
       condition: event.meta is defined
