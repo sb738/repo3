@@ -1,0 +1,12 @@
+- name: Golfball events
+  hosts: localhost
+  sources:
+    - cloin.eda.mqtt:
+        host: {{ host }}
+        topic: {{ topic }}
+
+  rules:
+    - name: New golfball event
+      condition: event.meta is defined
+      action:
+        debug:
