@@ -1,8 +1,9 @@
 - name: Golfball events
   hosts: localhost
   sources:
-    - cloin.eda.mqtt:
-        host: "{{ host }}"
+    - kubealex.eda.mqtt:
+        host: "{{ host}}"
+        port: "{{ port}}"
         topic: "{{ topic }}"
 
   rules:
