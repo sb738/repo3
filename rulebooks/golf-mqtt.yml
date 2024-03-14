@@ -7,7 +7,7 @@
         topic: "{{ topic }}"
 
   rules:
-    - name: New golfball event
-      condition: event.meta is defined
+    - name: New golfball high velocity event
+      condition: event.data > 8
       action:
         debug:
