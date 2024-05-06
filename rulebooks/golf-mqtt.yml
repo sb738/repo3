@@ -13,6 +13,6 @@
         debug:
 
     - name: Putt made
-      condition: event.ballState == "ST_MAGNET_STOP"
+      condition: event.data == "ST_MAGNET_STOP"
       action:
         debug:
