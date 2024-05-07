@@ -20,14 +20,14 @@
           organization: Default
           job_args:
             extra_vars:
-              mastodon_message: "New putt made in {{ event.data.stroke }}!"
+              mastodon_message: "New putt made in {{ event.stroke }}!"
 
     - name: Hole in one
-      condition: event.data == "ST_MAGNET_STOP" and event.data.stroke == 1
+      condition: event.data == "ST_MAGNET_STOP" and event.stroke == 1
       action:
         run_job_template:
           name: Mastodon post
           organization: Default
           job_args:
             extra_vars:
-              mastodon_message: "Talk about a hole in {{ event.data.stroke }}!"
+              mastodon_message: "Talk about a hole in {{ event.stroke }}!"
