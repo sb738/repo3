@@ -1,0 +1,24 @@
+---
+- name: Post to Mastodon
+  hosts: localhost
+  vars:
+    mastodon_instance: "https://mastodon.social"
+    mastodon_access_token: ""  # Replace with your actual access token
+    mastodon_message: ""
+  tasks:
+    - name: Post a message to Mastodon
+      uri:
+        url: "{{ mastodon_instance }}/api/v1/statuses"
+        method: POST
+        headers:
+          Authorization: "Bearer {{ mastodon_access_token }}"
+          Content-Type: "application/json"
+        body_format: json
+        body:
+          status: "{{ mastodon_message }}"
+      register: result
+
+    - name: Output the result
+      debug:
+        var: result
+
