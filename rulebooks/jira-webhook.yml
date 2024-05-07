@@ -10,6 +10,7 @@
     - name: New linux account
       condition: |
         event.payload.fields.customfield_10114.requestType.name == "New Linux Account Request" and 
-        event.payload.fields.issuetype.namedValue == "[System] Service request"
+        event.payload.fields.issuetype.namedValue == "[System] Service request" and
+        event.payload.fields.creator.displayName == "C. Kramer"
       action:
         debug:
