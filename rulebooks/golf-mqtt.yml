@@ -30,4 +30,4 @@
           organization: Default
           job_args:
             extra_vars:
-              mastodon_message: "Talk about a hole in {{ event.stroke }}! Event received at {{ event.meta.received_at }}"
+              mastodon_message: "Talk about a hole in {{ event.stroke }}! \n\n #eventdriven #ansible event received at {{ event.meta.received_at }}"
