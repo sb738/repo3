@@ -20,7 +20,7 @@
           organization: Default
           job_args:
             extra_vars:
-              mastodon_message: "New putt made in {{ event.stroke }} stroke! Event received at {{ event.meta.received_at }}"
+              mastodon_message: "New putt made in {{ event.stroke }} stroke! \n\n Event received at {{ event.meta.received_at }} by #eventdriven #ansible"
 
     - name: Hole in one
       condition: event.data == "ST_MAGNET_STOP" and event.stroke == 1
@@ -30,4 +30,4 @@
           organization: Default
           job_args:
             extra_vars:
-              mastodon_message: "Talk about a hole in {{ event.stroke }}! \n\n #eventdriven #ansible event received at {{ event.meta.received_at }}"
+              mastodon_message: "Talk about a hole in {{ event.stroke }}! \n\n Event received at {{ event.meta.received_at }} by #eventdriven #ansible \n https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExZzZsMW94OWNmcHZoMGc0cGN2bmJucjIxOXZkZ3k2dnFnY2R1ZG52ZiZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/akiHW8qDydkm4/giphy.gif"
