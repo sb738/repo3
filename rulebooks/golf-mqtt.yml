@@ -15,4 +15,19 @@
     - name: Putt made
       condition: event.data == "ST_MAGNET_STOP"
       action:
-        debug:
+        run_job_template:
+          name: Mastodon post
+          organization: Default
+          job_args:
+            extra_vars:
+              mastodon_message: "New putt made in {{ event.data.stroke }}!"
+
+    - name: Hole in one
+      condition: event.data == "ST_MAGNET_STOP" and event.data.stroke == 1
+      action:
+        run_job_template:
+          name: Mastodon post
+          organization: Default
+          job_args:
+            extra_vars:
+              mastodon_message: "Talk about a hole in {{ event.data.stroke }}!"
