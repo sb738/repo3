@@ -1,0 +1,14 @@
+- name: Datadog events on SQS
+  hosts: localhost
+  sources:
+    - ansible.eda.aws_sqs_queue:
+        region: "{{ region }}"
+        name: "{{ queue_name }}"
+        delay_seconds: "{{ delay_seconds }}"
+
+  rules:
+
+    - name: R1 - Datadog - catch all events
+      condition: event.meta is defined
+      action:
+        debug:
