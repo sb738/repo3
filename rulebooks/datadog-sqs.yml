@@ -3,7 +3,9 @@
   sources:
     - ansible.eda.aws_sqs_queue:
         region: "{{ region }}"
-        name: "{{ queue_name }}"
+        name: "{{ name }}"
+        access_key: "{{ access_key }}"
+        secret_key: "{{ secret_key }}"
         delay_seconds: "{{ delay_seconds }}"
 
   rules:
