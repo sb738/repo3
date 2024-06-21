@@ -16,7 +16,12 @@
         event.body.monitor_name is search("Toxicstack slow response time",ignorecase=true) and 
         event.body.monitor_name is not search("[TEST]",ignorecase=true)
       action:
-        debug:
+        run_job_template:
+          name: Apply proxy configuration
+          organization: Default
+          job_args:
+            extra_vars:
+              delete: true
 
     - name: R2 - Datadog - catch TESTing Toxicstock app alerts
       condition: |
