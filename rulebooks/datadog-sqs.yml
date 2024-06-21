@@ -9,8 +9,13 @@
         delay_seconds: "{{ delay_seconds }}"
 
   rules:
+  
+    - name: R1 - Datadog - catch app alerts
+      condition: event.body.monitor_name contains "Toxicstack slow response time" and event.body.monitor_state == "Alert"
+      action:
+        debug:
 
-    - name: R1 - Datadog - catch all events
+    - name: R2 - Datadog - catch all events
       condition: event.meta is defined
       action:
         debug:
