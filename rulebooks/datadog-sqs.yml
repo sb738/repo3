@@ -10,8 +10,9 @@
 
   rules:
   
-    - name: R1 - Datadog - catch Toxicstock app alerts
+    - name: R1 - Datadog - Toxicstock app request latency detected
       condition: |
+        event.body.type == "monitor" and
         event.body.monitor_state == "Alert" and 
         event.body.monitor_name is search("Toxicstack slow response time",ignorecase=true) and 
         event.body.monitor_name is not search("TEST",ignorecase=false)
@@ -25,13 +26,26 @@
 
     - name: R2 - Datadog - catch TESTing Toxicstock app alerts
       condition: |
-        event.body.monitor_state == "Alert" and 
+        event.body.type == "monitor" and
+        event.body.monitor_state == "Warn" and 
         event.body.monitor_name is search("Toxicstack slow response time",ignorecase=true) and 
         event.body.monitor_name is search("TEST",ignorecase=false)
       action:
+        run_job_template:
+          name: Apply proxy configuration
+          organization: Default
+          job_args:
+            extra_vars:
+              delete: false
+
+    - name: R3 - Datadog - Monitor resolved
+      condition: |
+        event.body.type == "monitor" and
+        event.body.monitor_state == "OK"
+      action:
         debug:
 
-    - name: R3 - Datadog - catch all other events
+    - name: R4 - Datadog - catch all other events
       condition: event.meta is defined
       action:
         debug:
