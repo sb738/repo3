@@ -10,12 +10,17 @@
 
   rules:
   
-    - name: R1 - Datadog - catch app alerts
-      condition: event.body.monitor_state == "Alert" and event.body.monitor_name is search("Toxicstack slow response time",ignorecase=true)
+    - name: R1 - Datadog - catch Toxicstock app alerts
+      condition: event.body.monitor_state == "Alert" and event.body.monitor_name is search("Toxicstack slow response time",ignorecase=true) and event.body.monitor_name is not search("[TEST]",ignorecase=true)
       action:
         debug:
 
-    - name: R2 - Datadog - catch all events
+    - name: R2 - Datadog - catch TESTing Toxicstock app alerts
+      condition: event.body.monitor_state == "Alert" and event.body.monitor_name is search("Toxicstack slow response time",ignorecase=true) and event.body.monitor_name is search("[TEST]",ignorecase=true)
+      action:
+        debug:
+
+    - name: R3 - Datadog - catch all events
       condition: event.meta is defined
       action:
         debug:
