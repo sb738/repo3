@@ -14,7 +14,7 @@
       condition: |
         event.body.monitor_state == "Alert" and 
         event.body.monitor_name is search("Toxicstack slow response time",ignorecase=true) and 
-        event.body.monitor_name is not search("[TEST]",ignorecase=true)
+        event.body.monitor_name is not match("[TEST]",ignorecase=false)
       action:
         run_job_template:
           name: Apply proxy configuration
@@ -27,7 +27,7 @@
       condition: |
         event.body.monitor_state == "Alert" and 
         event.body.monitor_name is search("Toxicstack slow response time",ignorecase=true) and 
-        event.body.monitor_name is search("[TEST]",ignorecase=true)
+        event.body.monitor_name is match("TEST",ignorecase=false)
       action:
         debug:
 
