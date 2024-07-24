@@ -1,16 +1,16 @@
-- name: webhook.site events
+- name: SNOW events via webhook
   hosts: localhost
   sources:
-    - name: Webhook.site POSTs as events
+    - name: EDA SNOW notification service
       ansible.eda.webhook:
         port: 5001
         host: 0.0.0.0
       filters:
         - cloin.eda.poster:
-            webhook_url: https://webhook.site/2124fed4-1a77-49f2-9eb7-10b53a874518
-
+            webhook_url: 
+            
   rules:
-    - name: R1 - New webhook.site POST with content
+    - name: R1 - New POST with content
       condition: |
         event.content.key == "value"
       action:
