@@ -1,0 +1,7 @@
+---
+- name: Debug event
+  hosts: localhost
+  gather_facts: false
+  tasks:
+    - ansible.builtin.debug:
+        msg: "{{ ansible_eda }}"
