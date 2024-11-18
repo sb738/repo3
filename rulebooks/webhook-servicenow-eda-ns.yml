@@ -13,3 +13,4 @@
         run_job_template:
           name: "Lookup ServiceNow REQ"
           organization: Default
+          post_events: true
