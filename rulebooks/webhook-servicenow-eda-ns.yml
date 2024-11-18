@@ -14,3 +14,8 @@
           name: "Lookup ServiceNow REQ"
           organization: Default
           post_events: true
+
+    - name: Catch all other events
+      condition: true
+      action:
+        debug:
