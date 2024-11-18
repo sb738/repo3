@@ -15,6 +15,11 @@
           organization: Default
           post_events: true
 
+    - name: Catch enriched event
+      condition: catalog_item_name is defined
+      action:
+        debug:
+
     - name: Catch all other events
       condition: true
       action:
