@@ -16,7 +16,7 @@
           post_events: true
 
     - name: Catch enriched event
-      condition: fact.catalog_item_name is defined
+      condition: fact.enriched_event is defined
       action:
         debug:
 
