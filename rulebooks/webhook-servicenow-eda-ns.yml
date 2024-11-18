@@ -15,8 +15,8 @@
           organization: Default
           post_events: true
 
-    - name: Catch enriched event
-      condition: fact.enriched_event is defined
+    - name: New VM request
+      condition: fact.enriched_event.catalog_item_name == "Provision VM (colin demo)"
       action:
         debug:
 
