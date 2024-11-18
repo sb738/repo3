@@ -1,0 +1,15 @@
+---
+- name: Respond to ServiceNow catalog request items
+  hosts: all
+  sources:
+    - ansible.eda.webhook:
+        host: 0.0.0.0
+        port: 5000
+  rules:
+
+    - name: New request item created
+      condition: event.payload.sys_class_name == "sc_request"
+      action:
+        run_job_template:
+          name: "Lookup ServiceNow REQ"
+          organization: Default
