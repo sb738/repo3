@@ -19,7 +19,7 @@
       condition:
         all:
           - events.ritm << fact.enriched_event.ritm_details is selectattr('cat_item.display_value', 'contains', "Provision VM (colin demo)")
-          - true
+          - event.meta is defined
       action:
         debug:
           var: event.ritm
