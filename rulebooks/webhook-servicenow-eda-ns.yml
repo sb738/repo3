@@ -19,7 +19,7 @@
       condition:
         all:
           - event.enriched_event.ritm_details is search("Provision VM (colin demo)", ignorecase=true)
-          - events.ritm << fact.enriched_event.ritm_details is selectattr('cat_item.display_value', 'contains', "Provision VM (colin demo)")
+          - events.ritm << fact.enriched_event.ritm_details is selectattr('cat_item', 'contains', "Provision VM (colin demo)")
       action:
         debug:
           var: event.ritm
