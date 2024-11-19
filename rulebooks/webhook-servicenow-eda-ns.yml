@@ -18,7 +18,7 @@
     - name: New VM request
       condition:
         all:
-          - event.enriched_event.ritm_details is search("Provision VM (colin demo)", ignorecase=true)
+          - event.enriched_event.ritm_details is selectattr('cat_item', 'contains', "Provision VM (colin demo)")
       action:
         debug:
           var: event.ritm
