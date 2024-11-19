@@ -16,9 +16,10 @@
           post_events: true
 
     - name: New VM request
-      condition: fact.enriched_event.catalog_item_name == "Provision VM (colin demo)"
+      condition: event.ritm << fact.enriched_event.ritm_details is selectattr('cat_item', 'contains', "Provision VM (colin demo)")
       action:
         debug:
+          var: event.ritm
 
     - name: Catch all other events
       condition: true
