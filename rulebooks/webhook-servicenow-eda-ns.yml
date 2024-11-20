@@ -22,7 +22,7 @@
           - event.meta is defined
       action:
         debug:
-          var: event.enriched_event.ritm_details
+          var: events.ritm
 
     - name: Catch all other events
       condition: true
