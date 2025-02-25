@@ -1,5 +1,6 @@
 - name: SNOW events via webhook
   hosts: localhost
+  become: true
   sources:
     - name: EDA SNOW notification service
       ansible.eda.webhook:
