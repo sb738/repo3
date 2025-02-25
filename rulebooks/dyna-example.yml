@@ -1,0 +1,45 @@
+---
+- name: Listen for events on Dynatrace API
+  hosts: all
+  sources:
+    - dynatrace.event_driven_ansible.dt_esa_api:
+        dt_api_host: "{{ _dt_api_host }}"
+        dt_api_token: "{{ _dt_api_token }}"
+        delay: 60
+
+  rules:
+
+    - name: Dynatrace | Sample rule part 1
+      condition: event.title == "SSL certificate expiration"
+      action:
+        post_event:
+          event:
+            edaTest: "{{ event.impactedEntities | selectattr('name', '==', 'NFLIS Health Check') | list }}"
+            # edaTest: "{{ event.impactedEntities | attr('entityId') | |  map(attribute='entityId') | list)[0] }}"
+            # edaTest: "{{ (event.impactedEntities | selectattr('name', '==', 'NFLIS Health Check') | map(attribute='entityId') | list)[0] }}"
+
+    - name: Dynatrace | Sample rule part 1.2
+      condition: event.edaTest is defined
+      action:
+        debug:
+        run_job_template:
+          name: EDA Dynatrace Test 3
+          organization: Default
+          job_args:
+            extra_vars:
+              # _hosts: "{{ (event.entityTags | selectattr('key', '==', 'Application') | map(attribute='value') | list)[0] }}"
+              edaTest: "{{ event.edaTest }}"
+
+    - name: Dynatrace | Sample rule
+      condition:
+        all:
+          - event.impactedEntities is selectattr('name', '==', "Qualys Cloud Agent")
+      action:
+        run_job_template:
+          name: EDA Dynatrace Test 2
+          organization: Default
+          job_args:
+            extra_vars:
+              _hosts: "{{ (event.entityTags | selectattr('key', '==', 'Environment') | map(attribute='value') | list)[0] }}"
+
+...
