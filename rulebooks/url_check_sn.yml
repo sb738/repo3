@@ -63,5 +63,5 @@
               Automated remediation was attempted.
               Result: {{ remediation_result.status }}
               Details: {{ remediation_result.stdout | default('No details available') }}
-              
               Next steps: Please review server logs for further investigation if the issue persists.
+...
