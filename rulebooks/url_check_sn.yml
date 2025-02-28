@@ -13,10 +13,7 @@
 
   rules:
     - name: Detect website down
-      condition: 
-        any:
-          - event.url_check.status != "up"
-          - event.url_check.status_code != 200
+      condition: event.url_check.status != 200
       action:
         - name: Log website down event
           debug:
