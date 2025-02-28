@@ -1,0 +1,70 @@
+---
+- name: Website Monitoring and Remediation Rulebook
+  hosts: all
+  sources:
+    - name: website_monitor
+      ansible.eda.url_check:
+        urls:
+          - url: http://10.182.0.7/
+            status_code: 200
+        delay: 60  # Check every 60 seconds
+        timeout: 10  # Timeout after 10 seconds
+        verify_ssl: false
+
+  rules:
+    - name: Detect website down
+      condition: 
+        any:
+          - event.url_check.status != "up"
+          - event.url_check.status_code != 200
+      action:
+        - name: Log website down event
+          debug:
+            msg: "ALERT: Website {{ event.url_check.url }} is down! Status code: {{ event.url_check.status }}"
+
+        - name: Create ServiceNow incident
+          servicenow.itsm.incident:
+            instance:
+              host: "https://vystarcudev.service-now.com/login.do"
+              username: "sbdv998f26"
+              password: "Ansible!24"
+            state: new
+            short_description: "ALERT: Website {{ event.url_check.url }} is down"
+            description: |
+              Website monitoring detected an issue.
+              URL: {{ event.url_check.url }}
+              Status Code: {{ event.url_check.status }}
+              Timestamp: {{ ansible_date_time.iso8601 }}
+            impact: "2"  # Medium
+            urgency: "2"  # Medium
+            category: "Infrastructure"
+            caller: "ansible.eda@vystarcu.org"
+          register: incident
+
+        - name: Log created incident number
+          debug:
+            msg: "Created ServiceNow incident: {{ incident.record.number }}"
+
+        - name: Attempt to restart web service
+          run_job_template:
+            name: apache-install
+            organization: Default
+            job_args:
+              extra_vars:
+                message: From EDA url_check source
+                sleep: 1        
+
+        - name: Update ServiceNow incident with remediation results
+          servicenow.itsm.incident:
+            instance:
+              host: "https://vystarcudev.service-now.com/login.do"
+              username: "sbdv998f26"
+              password: "Ansible!24"
+            state: in_progress
+            number: "{{ incident.record.number }}"
+            work_notes: |
+              Automated remediation was attempted.
+              Result: {{ remediation_result.status }}
+              Details: {{ remediation_result.stdout | default('No details available') }}
+              
+              Next steps: Please review server logs for further investigation if the issue persists.
