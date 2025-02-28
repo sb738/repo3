@@ -9,7 +9,6 @@
             status_code: 200
         delay: 60  # Check every 60 seconds
         timeout: 10  # Timeout after 10 seconds
-        verify_ssl: false
 
   rules:
     - name: Detect website down
@@ -22,9 +21,9 @@
         - name: Create ServiceNow incident
           servicenow.itsm.incident:
             instance:
-              host: "https://vystarcudev.service-now.com/login.do"
-              username: "sbdv998f26"
-              password: "Ansible!24"
+              host: vystarcudev.service-now.com
+              username: sbdv998f26
+              password: Ansible!24
             state: new
             short_description: "ALERT: Website {{ event.url_check.url }} is down"
             description: |
@@ -34,8 +33,7 @@
               Timestamp: {{ ansible_date_time.iso8601 }}
             impact: "2"  # Medium
             urgency: "2"  # Medium
-            category: "Infrastructure"
-            caller: "ansible.eda@vystarcu.org"
+            caller: "ansible.eda@example.com"
           register: incident
 
         - name: Log created incident number
@@ -49,19 +47,22 @@
             job_args:
               extra_vars:
                 message: From EDA url_check source
-                sleep: 1        
+                incident_number: "{{ incident.record.number }}"
+                incident_sys_id: "{{ incident.record.sys_id }}"
+                sleep: 1
+          register: remediation_result
 
         - name: Update ServiceNow incident with remediation results
           servicenow.itsm.incident:
             instance:
-              host: "https://vystarcudev.service-now.com/login.do"
-              username: "sbdv998f26"
-              password: "Ansible!24"
+              host: vystarcudev.service-now.com
+              username: sbdv998f26
+              password: Ansible!24
             state: in_progress
             number: "{{ incident.record.number }}"
             work_notes: |
               Automated remediation was attempted.
               Result: {{ remediation_result.status }}
               Details: {{ remediation_result.stdout | default('No details available') }}
+              
               Next steps: Please review server logs for further investigation if the issue persists.
-...
